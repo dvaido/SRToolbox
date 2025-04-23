@@ -9,3 +9,4 @@ Dependencies
 - Optimization Toolbox
 - Signal Processing Toolbox
 - Statistic and Machine Learning Toolbox
+- Wavelet Toolbox
