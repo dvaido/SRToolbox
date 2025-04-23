@@ -4,3 +4,8 @@ This toolbox contains some functions that allow for streamlining of the calibrat
 
 Dependencies
 - MATLAB 2023b
+- Curve Fitting Toolbox
+- Econometrics Toolbox
+- Optimization Toolbox
+- Signal Processing Toolbox
+- Statistic and Machine Learning Toolbox
