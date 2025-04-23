@@ -18,7 +18,7 @@ classdef stims
 
         function [f_grid, V_grid] = interGridGen(sweepInfo, calInfo, freq_ampl_resp)
             %INTERGRIDGEN Generates a V_grid by interpolating freq_ampl_resp
-            [F_cal, V_cal] = gridGen(calInfo);
+            [F_cal, V_cal] = fvGridGen(calInfo);
 
             C_cal = mean(freq_ampl_resp./V_cal, 1);
             f_0 = F_cal(1,:);
@@ -121,7 +121,7 @@ classdef stims
         function camFileGen(filesLoc, sweepInfo)    % old function
         %CAMFILEGEN Generates and plots camera file
 
-        duration = tools.durCalc(sweepInfo);
+        duration = stims.durCalc(sweepInfo);
         smp = 1/sweepInfo.sampling;
         time = 0:smp:(duration.time-smp); % already includes one frame shift
         camera = (square(2*pi*sweepInfo.fps*time,50)+1)*5/2;

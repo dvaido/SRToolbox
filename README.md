@@ -4,9 +4,7 @@ This toolbox contains some functions that allow for streamlining of the calibrat
 
 Dependencies
 - MATLAB 2023b
-- Curve Fitting Toolbox
-- Econometrics Toolbox
-- Optimization Toolbox
 - Signal Processing Toolbox
 - Statistic and Machine Learning Toolbox
 - Wavelet Toolbox
+- BundleTracker [![DOI](https://zenodo.org/badge/753794151.svg)](https://doi.org/10.5281/zenodo.14262468)
