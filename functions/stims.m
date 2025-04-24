@@ -18,7 +18,7 @@ classdef stims
 
         function [f_grid, V_grid] = interGridGen(sweepInfo, calInfo, freq_ampl_resp)
             %INTERGRIDGEN Generates a V_grid by interpolating freq_ampl_resp
-            [F_cal, V_cal] = fvGridGen(calInfo);
+            [F_cal, V_cal] = stims.fvGridGen(calInfo);
 
             C_cal = mean(freq_ampl_resp./V_cal, 1);
             f_0 = F_cal(1,:);
