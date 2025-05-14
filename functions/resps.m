@@ -44,6 +44,48 @@ classdef resps
             end
         end
 
+        function x_padded = xPad(x, pad_length)
+            % Appends a pad of length pad_length to the beginning
+            % and the end using the cross-correlation function
+            N = length(x);
+
+            if size(x,2) > 1
+                warning('xPad is expecting a column vector')
+            end
+
+            % Search for best match to the tail
+            tail = x(end - pad_length + 1:end);
+            max_corr_tail = -inf;
+            best_idx_tail = 1;
+            for i = 1:(N - 2*pad_length)
+                seg = x(i:i + pad_length - 1);
+                r = xcorr(tail, seg, 0, 'coeff');
+                if r > max_corr_tail
+                    max_corr_tail = r;
+                    best_idx_tail = i;
+                end
+            end
+            tail_offset = tail(end) - x(best_idx_tail + pad_length - 1);
+            tail_patch = tail_offset + x(best_idx_tail + pad_length:best_idx_tail + 2*pad_length - 1);
+
+            % Search for best match to the head
+            head = x(1:pad_length);
+            max_corr_head = -inf;
+            best_idx_head = pad_length;
+            for i = (pad_length+1):(N - pad_length + 1)
+                seg = x(i:i + pad_length - 1);
+                r = xcorr(head, seg, 0, 'coeff');
+                if r > max_corr_head
+                    max_corr_head = r;
+                    best_idx_head = i;
+                end
+            end
+            head_offset = head(1) - x(best_idx_head);
+            head_patch = head_offset + x(best_idx_head - pad_length:best_idx_head - 1);
+
+            x_padded = [head_patch; x; tail_patch];
+        end
+
         function smooth_and_flat = preprocess(x, drift_wind)
             %PREPROCESS Denoises and detrends the data stored in x
             no_lin_trend = detrend(x);
