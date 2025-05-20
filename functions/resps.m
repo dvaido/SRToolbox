@@ -199,10 +199,24 @@ classdef resps
             inst_freq(inst_ampl < decision_boundary) = NaN;
         end
 
-        function inst_freq = instFreqVMD(t, x)
+        function inst_freq = instFreqVMD(t, x, padding)
             % INSTFREQVMD Uses Variational Mode Decomposition to find the
             % dominant modes and calculate their instantaneous frequency
-            [imf, residual, info] = vmd(x);
+            Fs = 1/(t(2)-t(1));
+
+            if padding == true
+                pad_length = 100;
+                x_padded = resps.xPad(x, pad_length);
+                imf_padded = vmd(x_padded);
+                [~, ~, ~, imfinsf, imfinse] = hht(imf_padded, Fs);
+                ampl_sum = sum(imfinse, 1);
+                [~, main_dim] = max(ampl_sum);
+                inst_freq_padded = movmean(imfinsf(:, main_dim), pad_length);
+                inst_freq = inst_freq_padded(pad_length+1:end-pad_length);
+            else
+                imf = vmd(x);
+                [~, ~, ~, inst_freq, ~] = hht(imf, Fs);
+            end
         end
 
         function [freq_fit, mu_freq, sigma_freq] = freqAnalyzer(inst_freq)
