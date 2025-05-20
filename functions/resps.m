@@ -199,6 +199,12 @@ classdef resps
             inst_freq(inst_ampl < decision_boundary) = NaN;
         end
 
+        function inst_freq = instFreqVMD(t, x)
+            % INSTFREQVMD Uses Variational Mode Decomposition to find the
+            % dominant modes and calculate their instantaneous frequency
+            [imf, residual, info] = vmd(x);
+        end
+
         function [freq_fit, mu_freq, sigma_freq] = freqAnalyzer(inst_freq)
             % Determine the average frequency with st dev
             freq_fit = zeros(size(inst_freq));
