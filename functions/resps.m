@@ -86,12 +86,16 @@ classdef resps
             x_padded = [head_patch; x; tail_patch];
         end
 
-        function smooth_and_flat = preprocess(x, drift_wind)
+        function smooth_and_flat = preprocess(x, drift_wind, padding)
             %PREPROCESS Denoises and detrends the data stored in x
             no_lin_trend = detrend(x);
-            x_padded = resps.xPad(no_lin_trend, drift_wind);
-            x_trend = movmean(x_padded, drift_wind, 1);
-            flat = no_lin_trend - x_trend(drift_wind+1:end-drift_wind);
+            if padding == true
+                x_padded = resps.xPad(no_lin_trend, drift_wind);
+                x_trend = movmean(x_padded, drift_wind, 1);
+                flat = no_lin_trend - x_trend(drift_wind+1:end-drift_wind);
+            else
+                flat = no_lin_trend - movmean(no_lin_trend, drift_wind, 1);
+            end
             smooth_and_flat = wdenoise(flat);
         end
 
